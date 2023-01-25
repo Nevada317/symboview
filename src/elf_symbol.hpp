@@ -8,44 +8,41 @@
 
 
 class SymbolRecord {
-	uint64_t Value; // aka uint64_t Address;
+	std::string Original;
+public:
+	bool isValid;
+
+	union {
+		uint64_t Value;
+		uint64_t Address;
+	};
 	struct {
-		// Group 1
-		enum {
-			SCOPE_None        = ' ',
-			SCOPE_Local       = 'l',
-			SCOPE_Global      = 'g',
-			SCOPE_Both        = '!',
-		} Scope;
-		// Group 2
-		bool Weak; // w/_
-		// Group 3
-		bool Constructor; // C/_
-		// Group 4
-		bool Warning; // W/_
-		// Group 5
-		bool IndirectReference; // I/_
-		// Group 6
-		enum {
-			Class_Regular     = ' ',
-			Class_Debugging   = 'd',
-			Class_Dynamic     = 'D'
-		} Class;
-		// Group 7
-		enum {
-			NameType_Normal   = ' ',
-			NameType_Function = 'F',
-			NameType_File     = 'f',
-			NameType_Object   = 'O',
-		} NameType;
-	} Flags;
+		char Scope;
+		char Weak;
+		char Ctor;
+		char Warn;
+		char Indir;
+		char Cls;
+		char Ntype;
+	} Chars;
+	bool isGlobal;
+	bool isLocal;
+	bool isWeak;
+	bool isCtor;
+	bool isWarning;
+	bool isIndirectRef;
+	bool isDebugging;
+	bool isDynamic;
+	bool isFunction;
+	bool isFile;
+	bool isObject;
+	bool isSegment;
 	std::string Section;
 	union {
-		uint32_t Size;
-		uint32_t Alignment;
+		uint64_t Size;
+		uint64_t Alignment;
 	};
 	std::string Name;
-public:
 	SymbolRecord(std::string ObjdumpString);
 };
 

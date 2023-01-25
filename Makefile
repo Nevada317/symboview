@@ -1,15 +1,17 @@
 # GNU Makefile
 
 PROG=symboview
-CC?=gcc
-CCLD?=gcc
+CC=gcc
+CPP=gcc
+CCLD=gcc
 STRIP?=strip
 
 BUILD_DIR?=build
 
-HEADS=$(shell find src -name "*.h")
-SRCS=$(shell find src -name "*.c")
-OBJS=$(patsubst src/%.c,${BUILD_DIR}/%.o,${SRCS})
+HEADS=$(shell find src -name "*.h") $(shell find src -name "*.hpp")
+SRCS_C=$(shell find src -name "*.c")
+SRCS_CPP=$(shell find src -name "*.cpp")
+OBJS=$(patsubst src/%.c,${BUILD_DIR}/%.o,${SRCS_C}) $(patsubst src/%.cpp,${BUILD_DIR}/%.o,${SRCS_CPP})
 
 CLEAR_TARGETS=${BUILD_DIR} build/
 EXTRADEPS=Makefile
@@ -19,6 +21,8 @@ CFLAGS  += -Wall
 CFLAGS  += -Wextra
 
 CFLAGS  += -pthread
+
+CFLAGS  += -lstdc++
 
 # Add all search paths for headers on order of prefrence
 CFLAGS += -Isrc/
@@ -73,7 +77,7 @@ ifeq "$(DEBUG)" "1"
   $(info ### DEBUG INFO enabled)
   $(info )
   $(info Found headers: ${HEADS})
-  $(info Found sources: ${SRCS})
+  $(info Found sources: ${SRCS_C})
   $(info Target objects: ${OBJS})
   $(info )
   CFLAGS += -g
@@ -98,9 +102,15 @@ ${BUILD_DIR}/${BINARY_UNSTRIPPED}: ${OBJS}
 	$(CC) ${CFLAGS} ${LDFLAGS} -o $@ $^ ${LIBS}
 	@echo -e "Done\n"
 
+${BUILD_DIR}/%.o: src/%.cpp ${HEADS} ${EXTRADEPS}
+	@echo "Making $@ form $<"
+	@mkdir -p $(dir $@)
+	$(CPP) ${CFLAGS} -c -o $@ $< ${LIBS}
+	@echo -e "Done\n"
+
 ${BUILD_DIR}/%.o: src/%.c ${HEADS} ${EXTRADEPS}
 	@echo "Making $@ form $<"
-	mkdir -p $(dir $@)
+	@mkdir -p $(dir $@)
 	$(CC) ${CFLAGS} -c -o $@ $< ${LIBS}
 	@echo -e "Done\n"
 

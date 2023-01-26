@@ -13,12 +13,14 @@
 class SymbolRecordList {
 	std::list<SymbolRecord> locallist;
 	std::list<SymbolRecord> functions;
+	std::list<SymbolRecord> undefs;
 public:
 	SymbolRecordList();
 
 	void Fill(std::string infile);
 
 	std::list<SymbolRecord>* GetFunctions();
+	std::list<SymbolRecord>* GetUndefs();
 };
 
 

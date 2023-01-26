@@ -31,6 +31,7 @@ void SymbolRecordList::Fill(std::string infile) {
 			std::smatch matches;
 			if(std::regex_search(line, matches, rgx) && (matches.size() == 2)) {
 				printf("filename: %s\n", matches[1].str().c_str());
+				filename = matches[1].str();
 			}
 		}
 		// printf("line: %s\n", line.c_str());
@@ -40,9 +41,13 @@ void SymbolRecordList::Fill(std::string infile) {
 	// 		printf("%s\n", record.Name.c_str());
 	// 	}
 	// }
-	std::list<SymbolRecord>* sorted = GetFunctions();
-	for (SymbolRecord& record : *sorted) {
-		printf("%s\n", record.Name.c_str());
+	std::list<SymbolRecord>* sorted1 = GetFunctions();
+	for (SymbolRecord& record : *sorted1) {
+		printf("D: %s (%s)\n", record.Name.c_str(), record.Filename.c_str());
+	}
+	std::list<SymbolRecord>* sorted2 = GetUndefs();
+	for (SymbolRecord& record : *sorted2) {
+		printf("C: %s (%s)\n", record.Name.c_str(), record.Filename.c_str());
 	}
 }
 
@@ -60,4 +65,16 @@ std::list<SymbolRecord>* SymbolRecordList::GetFunctions() {
 		functions.sort(SymbolRecord_CompareByName);
 	}
 	return &functions;
+}
+
+std::list<SymbolRecord>* SymbolRecordList::GetUndefs() {
+	if (undefs.empty()) {
+		for (SymbolRecord& record : locallist) {
+			if (record.isUndefReference) {
+				undefs.push_back(record);
+			}
+		}
+		undefs.sort(SymbolRecord_CompareByName);
+	}
+	return &undefs;
 }

@@ -1,16 +1,11 @@
 #ifndef _SymbolRecord_H
 #define _SymbolRecord_H
 
-#include <stdint.h>
-#include <stdbool.h>
 #include <string>
-#include <list>
-
 
 class SymbolRecord {
 	std::string Original;
 public:
-	// bool compare(const SymbolRecord &a, const SymbolRecord &b);
 	bool isValid;
 
 	union {
@@ -49,22 +44,9 @@ public:
 	};
 	std::string Name;
 	std::string Filename;
+
+	// Constructor
 	SymbolRecord(std::string ObjdumpString);
 };
-
-class SymbolRecordList {
-	std::list<SymbolRecord> locallist;
-	std::list<SymbolRecord> functions;
-public:
-	SymbolRecordList();
-
-	void Fill(std::string infile);
-
-	std::list<SymbolRecord>* GetFunctions();
-};
-
-
-
-
 
 #endif /* _SymbolRecord_H */

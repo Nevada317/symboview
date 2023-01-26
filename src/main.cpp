@@ -1,4 +1,4 @@
-#include "elf_symbol.hpp"
+#include "symbolrecordlist.hpp"
 
 #include <stdio.h>
 #include <string>

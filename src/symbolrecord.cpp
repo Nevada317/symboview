@@ -1,14 +1,6 @@
-#include "elf_symbol.hpp"
+#include "symbolrecord.hpp"
 
-#include <sstream>
-#include <string>
-#include <cstring>
-#include <fstream>
 #include <regex>
-#include <iostream>
-#include <cassert>
-
-using namespace std;
 
 #define OBJDUMP_ARG_INDEX_VALUE    1
 #define OBJDUMP_ARG_INDEX_SCOPE    2
@@ -21,6 +13,8 @@ using namespace std;
 #define OBJDUMP_ARG_INDEX_SECTION  9
 #define OBJDUMP_ARG_INDEX_SIZE    10
 #define OBJDUMP_ARG_INDEX_NAME    11
+
+using namespace std;
 
 SymbolRecord::SymbolRecord(std::string ObjdumpString) {
 	isValid = false;
@@ -77,57 +71,3 @@ SymbolRecord::SymbolRecord(std::string ObjdumpString) {
 	}
 }
 
-SymbolRecordList::SymbolRecordList() {
-	printf("SymbolRecordList\n");
-}
-
-void SymbolRecordList::Fill(std::string infile) {
-	ifstream inFile;
-	inFile.open(infile);
-
-	string context_filename = "";
-
-	std::string line;
-	std::string filename = "";
-	while (std::getline(inFile, line))
-	{
-		SymbolRecord* temp = new SymbolRecord(line);
-		if (temp->isValid) {
-			temp->Filename = filename;
-			locallist.push_back(*temp);
-			delete temp;
-		} else if (line.length() > 5){
-			std::regex rgx("^([^:]+):[\t ]+file");
-			std::smatch matches;
-			if(std::regex_search(line, matches, rgx) && (matches.size() == 2)) {
-				printf("filename: %s\n", matches[1].str().c_str());
-			}
-		}
-		// printf("line: %s\n", line.c_str());
-	}
-	// for (SymbolRecord& record : locallist) {
-	// 	if (record.isFunction) {
-	// 		printf("%s\n", record.Name.c_str());
-	// 	}
-	// }
-	std::list<SymbolRecord>* sorted = GetFunctions();
-	for (SymbolRecord& record : *sorted) {
-		printf("%s\n", record.Name.c_str());
-	}
-}
-
-static bool SymbolRecord_CompareByName(const SymbolRecord &a, const SymbolRecord &b) {
-	return b.Name.compare(a.Name);
-}
-
-std::list<SymbolRecord>* SymbolRecordList::GetFunctions() {
-	if (functions.empty()) {
-		for (SymbolRecord& record : locallist) {
-			if (record.isFunction) {
-				functions.push_back(record);
-			}
-		}
-		functions.sort(SymbolRecord_CompareByName);
-	}
-	return &functions;
-}

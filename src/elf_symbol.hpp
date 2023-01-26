@@ -1,5 +1,5 @@
-#ifndef _ELF_SYMBOL_H
-#define _ELF_SYMBOL_H
+#ifndef _SymbolRecord_H
+#define _SymbolRecord_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -38,6 +38,10 @@ public:
 	bool isFile;
 	bool isObject;
 	bool isSegment;
+
+	bool isCommon;
+	bool isUndefReference;
+	bool isAbsolute;
 	std::string Section;
 	union {
 		uint64_t Size;
@@ -63,4 +67,4 @@ public:
 
 
 
-#endif /* _ELF_SYMBOL_H */
+#endif /* _SymbolRecord_H */

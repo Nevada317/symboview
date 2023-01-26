@@ -62,6 +62,9 @@ SymbolRecord::SymbolRecord(std::string ObjdumpString) {
 
 		sarg = matches[OBJDUMP_ARG_INDEX_SECTION].str();
 		Section = sarg;
+		isCommon = (sarg == "*COM*");
+		isUndefReference = (sarg == "*UND*");
+		isAbsolute = (sarg == "*ABS*");
 
 		sarg = matches[OBJDUMP_ARG_INDEX_SIZE   ].str();
 		Size = stol(sarg, NULL, 16);

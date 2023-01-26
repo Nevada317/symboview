@@ -10,6 +10,7 @@
 class SymbolRecord {
 	std::string Original;
 public:
+	// bool compare(const SymbolRecord &a, const SymbolRecord &b);
 	bool isValid;
 
 	union {
@@ -43,14 +44,19 @@ public:
 		uint64_t Alignment;
 	};
 	std::string Name;
+	std::string Filename;
 	SymbolRecord(std::string ObjdumpString);
 };
 
 class SymbolRecordList {
 	std::list<SymbolRecord> locallist;
+	std::list<SymbolRecord> functions;
 public:
 	SymbolRecordList();
+
 	void Fill(std::string infile);
+
+	std::list<SymbolRecord>* GetFunctions();
 };
 
 

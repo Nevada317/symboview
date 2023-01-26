@@ -87,11 +87,7 @@ void SymbolRecordList::Fill(std::string infile) {
 	std::string line;
 	while (std::getline(inFile, line))
 	{
-		if (!strncmp(line.c_str(), "@FILE:", 6)) {
-			printf("FILENAME: %s\n", line.c_str());
-			// scanf("line: %s\n", line.c_str());
-		}
-		SymbolRecord temp(line);
+		SymbolRecord temp = line;
 		// printf("line: %s\n", line.c_str());
 
 	}

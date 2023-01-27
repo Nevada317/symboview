@@ -36,6 +36,9 @@ int main(int argc, char *argv[]) {
 		printf("UD: %s\n", record.Name.c_str());
 		HandleRecord(record);
 	}
+	for (SymbolRecord& record : ElfSymbol.FindMatching([](SymbolRecord& a) -> bool {return a.isAbsolute;})) {
+		printf("FM: %s\n", record.Name.c_str());
+	}
 
 	// for (const std::string& record : ByFile.GetAllTags()) {
 	// 	int records = ByFile.GetTagPair(record)->List.size();

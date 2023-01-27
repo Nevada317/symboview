@@ -21,6 +21,7 @@ public:
 
 	std::list<SymbolRecord>* GetFunctions();
 	std::list<SymbolRecord>* GetUndefs();
+	std::list<SymbolRecord> FindMatching(bool (*criteria) (SymbolRecord& record));
 };
 
 

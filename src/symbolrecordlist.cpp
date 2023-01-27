@@ -78,3 +78,13 @@ std::list<SymbolRecord>* SymbolRecordList::GetUndefs() {
 	}
 	return &undefs;
 }
+
+std::list<SymbolRecord> SymbolRecordList::FindMatching(bool (*criteria) (SymbolRecord& record)) {
+	std::list<SymbolRecord> res;
+	for (SymbolRecord& record : locallist) {
+		if (criteria(record)) {
+			res.push_back(record);
+		}
+	}
+	return res;
+}

@@ -41,14 +41,14 @@ void SymbolRecordList::Fill(std::string infile) {
 	// 		printf("%s\n", record.Name.c_str());
 	// 	}
 	// }
-	std::list<SymbolRecord>* sorted1 = GetFunctions();
-	for (SymbolRecord& record : *sorted1) {
-		printf("D: %s (%s)\n", record.Name.c_str(), record.Filename.c_str());
-	}
-	std::list<SymbolRecord>* sorted2 = GetUndefs();
-	for (SymbolRecord& record : *sorted2) {
-		printf("C: %s (%s)\n", record.Name.c_str(), record.Filename.c_str());
-	}
+	// std::list<SymbolRecord>* sorted1 = GetFunctions();
+	// for (SymbolRecord& record : *sorted1) {
+	// 	printf("D: %s (%s)\n", record.Name.c_str(), record.Filename.c_str());
+	// }
+	// std::list<SymbolRecord>* sorted2 = GetUndefs();
+	// for (SymbolRecord& record : *sorted2) {
+	// 	printf("C: %s (%s)\n", record.Name.c_str(), record.Filename.c_str());
+	// }
 }
 
 static bool SymbolRecord_CompareByName(const SymbolRecord &a, const SymbolRecord &b) {
